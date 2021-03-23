@@ -2,6 +2,7 @@
 The official repository with the code of the 2021 Scantnik team.
 
 Moved from https://github.com/RopeyOrc41/Scantnik2021/
+
 License: scantnik/Scantnik2021 is licensed under the GNU General Public License v3.0 (GPL-3.0)
 
 ---
