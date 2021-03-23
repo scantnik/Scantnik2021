@@ -25,16 +25,16 @@ SoftwareSerial --> Included on Arduino IDE
 
 # Acknowledgments
 
-Thanks to the *POPSAT 2020 team* for the help!
+Thanks to the **POPSAT 2020 team** for the help!
 
-Thanks to *Nagore Ocejo Blanco* for the opportunity and for being a very good team leader!
+Thanks to **Nagore Ocejo Blanco** for the opportunity and for being a very good team leader!
 
-Thanks to *IES Iturrama BHI* for the opportunity and the economical help!
+Thanks to **IES Iturrama BHI** for the opportunity and the economical help!
 
-Thanks to *DINABI Industria y Desarrollo S.L.* for economically helping this project!
+Thanks to **DINABI Industria y Desarrollo S.L.** for economically helping this project!
 
-Thanks to *Innovaland 3D* for providing the 3D printing material!
+Thanks to **Innovaland 3D** for providing the 3D printing material!
 
-Thanks to *Amaiur López* for making our fancy and cool logo!
+Thanks to **Amaiur López** for making our fancy and cool logo!
 
-Thanks to *Mertxe Astua* for helping us with the parachute!
+Thanks to **Mertxe Astua** for helping us with the parachute!
