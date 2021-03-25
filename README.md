@@ -1,6 +1,6 @@
 # Scantnik2021_Arduino
 
-<p align="center"><img src="https://raw.githubusercontent.com/scantnik/Scantnik2021/main/assets/Scantnik_transparente_logo.png" alt="Logo Scantnik"></p>
+<p align="center"><img width="50%" height="50%" src="https://raw.githubusercontent.com/scantnik/Scantnik2021/main/assets/Scantnik_transparente_logo.png" alt="Logo Scantnik"></p>
 
 The official repository with the code of the 2021 Scantnik team.
 
