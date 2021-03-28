@@ -1,8 +1,10 @@
-<p align="center"><img width="50%" height="50%" src="https://raw.githubusercontent.com/scantnik/Scantnik2021/main/assets/Scantnik_transparente_logo.png" alt="Logo Scantnik"></p>
+<a href="https://scantnik.com"><p align="center"><img width="50%" height="50%" src="https://raw.githubusercontent.com/scantnik/Scantnik2021/main/assets/Scantnik_transparente_logo.png" alt="Logo Scantnik"></p></a>
 
 The official repository with the code of the 2021 Scantnik team.
 
 You can find our actual code here: https://github.com/scantnik/Scantnik2021/blob/main/Scantnik_optimization/Scantnik_optimization.ino
+
+Our website: https://scantnik.com
 
 Moved from https://github.com/RopeyOrc41/Scantnik2021/
 
