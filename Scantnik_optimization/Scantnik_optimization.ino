@@ -141,7 +141,7 @@ void loop() {
 //--------------------------------------------------------------------------
 
   bme.readSensor();
-  bmp_Pa = bmp.readPressure() / 100; //Almacenar la presion del BMP | Store the pressure value from the BMP
+  bmp_Pa = bmp.readPressure(); //Almacenar la presion del BMP | Store the pressure value from the BMP
   bme_Pa = bme.getPressure_MB() * 100; //Almacenar la presion del BME | Store the pressure value from the BME
   bme_H = bme.getHumidity(); //Almacenar el porcentaje de humedad ambiente | Store the humidity value
   bme_T = bme.getTemperature_C(); //Almacenar la temperatura del BME (celsius) | Store the celsius temperature value of the BME
