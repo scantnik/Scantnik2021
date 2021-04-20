@@ -14,6 +14,7 @@
  *  Envío APC220 | APC220 sending
  *  Lectura sensores | Sensor reading
  *  Guardar en SD | Saving on SD
+ *  Modulo GPS | GPS Module
  *  
  * 
  * ----------------------------------------------------------------
@@ -31,10 +32,14 @@
 #include "cactus_io_BME280_I2C.h" // Libreria necesaria para el BME280 | Library for the BME280
 #include <Adafruit_BMP280.h>  // Libreria necesaria para el BMP280 | Library for the BMP280
 #include <SoftwareSerial.h> // Libreria necesaria para crear puertos serial en pines digitales (para la tarjeta SD) | Library for creating serial ports on digital arduino ports (for the SD card)
+#include <TinyGPS.h> // Libreria necesaria para la conversion de datos GPS | Library for converting the GPS data
 
 //--------------------------------------------------------------------------
 
 SoftwareSerial Tarjeta(9,10); //Crear puerto serie para el OpenLog | Creation of the serial port for the OpenLog (Rx, Tx)
+TinyGPS gps;
+SoftwareSerial gpsSerial(4,3); //Crear puerto serie para el GPS | Creation of the serial port for the GPS (Rx, Tx)
+
 
 //--------------------------------------------------------------------------
 
@@ -65,6 +70,7 @@ void setup() {
  
   Serial.begin(9600); //Iniciar el puerto serie por defecto | Start the default serial port
   Tarjeta.begin(9600);  //Iniciar el puerto serie para el OpenLog | Start the OpenLog serial port
+  gpsSerial.begin(9600);  //Iniciar el puerto serie para el GPS | Start the GPS serial port
 
 //--------------------------------------------------------------------------
 
@@ -153,6 +159,33 @@ void loop() {
   UVsensorVoltage = UVsensorValue/1024*5; //Convertir el valor analogico en voltaje | Convert the analog value on voltage
 
 //--------------------------------------------------------------------------
+
+
+// NOT TESTED | GPS
+
+
+  bool newData = false;
+  unsigned long chars;
+  unsigned short sentences, failed;
+
+   while (gpsSerial.available()) {
+    char c = gpsSerial.read();
+
+    if (gps.encode(c))
+      newData = true;
+  }
+  unsigned long age;
+  if (newData) {
+    gps_alt = gps.f_altitude();
+    gps.f_get_position(&flat, &flon, &age);
+
+  }
+
+//--------------------------------------------------------------------------
+
+
+
+
 //
 // Añadimos todos los datos al String | Add all data to the String
 //
@@ -176,6 +209,24 @@ void loop() {
   data += String(bmp_T, 2);
   data += F(",");
   data += String(UVsensorVoltage, 2);
+
+// NOT TESTED | GPS
+
+  data += F(",");
+  data += String(gps_alt);
+  data += F(",");
+  data += String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+  data += F(",");
+  data += String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+  data += F(",");
+  data += String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
+  data += F(",");
+  data += String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop();
+  data += F(",");
+  data += String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0 : gps.constellations());
+
+
+
 
 //--------------------------------------------------------------------------
 

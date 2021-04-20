@@ -30,6 +30,8 @@ Adafruit_BMP280 --> https://github.com/adafruit/Adafruit_BMP280_Library
 
 SoftwareSerial --> Included on Arduino IDE
 
+TinyGPS --> https://github.com/mikalhart/TinyGPS/blob/master/TinyGPS.h
+
 ---
 
 # Acknowledgements
