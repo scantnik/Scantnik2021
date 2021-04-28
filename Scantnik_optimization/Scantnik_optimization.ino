@@ -57,6 +57,9 @@ float UVsensorValue; //Float para almacenar la lectura analógica del sensor UV 
 float bmp_T; //Float para almacenar los valores de temperatura del BMP | Float for storing the temperature values from the BMP
 float bme_T; //Float para almacenar los valores de temperatura del BME | Float for storing the temperature values from the BME
 float bme_H; //Float para almacenar los valores de humedad del BME | Float for storing the humidity values from the BME
+float flat;
+float flon;
+float gps_alt;
 
 //--------------------------------------------------------------------------
 
@@ -221,9 +224,8 @@ void loop() {
   data += F(",");
   data += String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
   data += F(",");
-  data += String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop();
-  data += F(",");
-  data += String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0 : gps.constellations());
+  data += String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
+
 
 
 
