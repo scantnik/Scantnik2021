@@ -15,13 +15,14 @@
  *  Lectura sensores | Sensor reading
  *  Guardar en SD | Saving on SD
  *  Modulo GPS | GPS Module
+ *  Medicion velocidad | Speed
  *  
  * 
  * ----------------------------------------------------------------
  * 
  *  **Cadena de envío/recepción: | String:**
  * 
- *  ident, Seg, CO2, COV, PresBME, PresBMP, Humed, TempBME, TempBMP, UV
+ *  ident, Seg, CO2, COV, PresBME, PresBMP, AltBMP, VelBMP, Humed, TempBME, TempBMP, UV
  * 
  */
 
@@ -44,6 +45,7 @@ SoftwareSerial gpsSerial(4,3); //Crear puerto serie para el GPS | Creation of th
 //--------------------------------------------------------------------------
 
 float segundo; //Añadir un valor para el tiempo | Add a float for the millis()
+float segundoold;
 float i; //Añadir un identificador de dato | Add a data identificator
 
 //--------------------------------------------------------------------------
@@ -57,6 +59,12 @@ float UVsensorValue; //Float para almacenar la lectura analógica del sensor UV 
 float bmp_T; //Float para almacenar los valores de temperatura del BMP | Float for storing the temperature values from the BMP
 float bme_T; //Float para almacenar los valores de temperatura del BME | Float for storing the temperature values from the BME
 float bme_H; //Float para almacenar los valores de humedad del BME | Float for storing the humidity values from the BME
+float altitud;
+float altitudold;
+float velocidad;
+
+//--------------------------------------------------------------------------
+
 float flat;
 float flon;
 float gps_alt;
@@ -133,8 +141,11 @@ void loop() {
 
 //--------------------------------------------------------------------------
 
+  segundoold = segundo;
+  altitudold = altitud;
   segundo = millis(); //Guardar el tiempo actual en la float "segundo" | Store the actual time on the "segundo" float.
   i = i + 1; //Aumentar el identificador de dato | Increase the data identifier
+  segundo = segundo/1000; //Convertir los milisegundos a segundos
 
 //--------------------------------------------------------------------------
 
@@ -155,6 +166,8 @@ void loop() {
   bme_H = bme.getHumidity(); //Almacenar el porcentaje de humedad ambiente | Store the humidity value
   bme_T = bme.getTemperature_C(); //Almacenar la temperatura del BME (celsius) | Store the celsius temperature value of the BME
   bmp_T = bmp.readTemperature(); //Almacenar la temperatura del BMP (celsius) | Store the celsius temperature value of the BMP
+  altitud = bmp.readAltitude(1015);
+  velocidad = (altitud - altitudold)/(segundo - segundoold);
 
 //--------------------------------------------------------------------------
  
@@ -204,6 +217,10 @@ void loop() {
   data += String(bme_Pa, 2);
   data += F(",");
   data += String(bmp_Pa, 2);
+  data += F(",");
+  data += String(altitud, 2);
+  data += F(",");
+  data += String(velocidad, 2);
   data += F(",");
   data += String(bme_H, 2);
   data += F(",");
