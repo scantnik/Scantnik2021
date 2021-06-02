@@ -1,3 +1,31 @@
+/* Versión optimizada del código original del equipo Scantnik2021
+ * Optimized version from the original Scantnik2021 team code
+ * ----------------------------------------------------------------
+ *  
+ *  **Funcionando y probado: | Working and tested:**
+ * 
+ *  Nada de momento | Nothing yet :)
+ * 
+ * 
+ * ----------------------------------------------------------------
+ * 
+ *  **No probado: | Not tested:**
+ *  
+ *  Envío APC220 | APC220 sending
+ *  Lectura sensores | Sensor reading
+ *  Guardar en SD | Saving on SD
+ *  Modulo GPS | GPS Module
+ *  Medicion velocidad | Speed
+ *  
+ * 
+ * ----------------------------------------------------------------
+ * 
+ *  **Cadena de envío/recepción: | String:**
+ * 
+ *  ident, Seg, CO2, COV, PresBME, PresBMP, AltBMP, VelBMP, Humed, TempBME, TempBMP, UV
+ * 
+ */
+
 #include "Adafruit_CCS811.h"  // Libreria necesaria para el CCS811 | Library for the CCS811
 #include <Wire.h> // Libreria necesaria para la comunicación por I2C | Library for I2C communication
 #include <SPI.h>  // Libreria necesaria para la comunicación por SPI | Library for SPI communication
