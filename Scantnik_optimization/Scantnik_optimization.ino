@@ -1,32 +1,3 @@
-/* Versión optimizada del código original del equipo Scantnik2021
- * Optimized version from the original Scantnik2021 team code
- * ----------------------------------------------------------------
- *  
- *  **Funcionando y probado: | Working and tested:**
- * 
- *  Nada de momento | Nothing yet :)
- * 
- * 
- * ----------------------------------------------------------------
- * 
- *  **No probado: | Not tested:**
- *  
- *  Envío APC220 | APC220 sending
- *  Lectura sensores | Sensor reading
- *  Guardar en SD | Saving on SD
- *  Modulo GPS | GPS Module
- *  Medicion velocidad | Speed
- *  
- * 
- * ----------------------------------------------------------------
- * 
- *  **Cadena de envío/recepción: | String:**
- * 
- *  ident, Seg, CO2, COV, PresBME, PresBMP, AltBMP, VelBMP, Humed, TempBME, TempBMP, UV
- * 
- */
-
-
 #include "Adafruit_CCS811.h"  // Libreria necesaria para el CCS811 | Library for the CCS811
 #include <Wire.h> // Libreria necesaria para la comunicación por I2C | Library for I2C communication
 #include <SPI.h>  // Libreria necesaria para la comunicación por SPI | Library for SPI communication
@@ -59,7 +30,9 @@ float UVsensorValue; //Float para almacenar la lectura analógica del sensor UV 
 float bmp_T; //Float para almacenar los valores de temperatura del BMP | Float for storing the temperature values from the BMP
 float bme_T; //Float para almacenar los valores de temperatura del BME | Float for storing the temperature values from the BME
 float bme_H; //Float para almacenar los valores de humedad del BME | Float for storing the humidity values from the BME
-float altitud;
+float altitud; //Float para almacenar los valores de altitud del BMP | Float for storing altitude values from the BMP
+float alturainicio; //Limite de altitud para identificar encendido del buzzer| Threshold for the start of the buzzer
+float alturamaxbuzz;
 float altitudold;
 float velocidad;
 
@@ -85,7 +58,8 @@ void setup() {
 
 //--------------------------------------------------------------------------
 
-  pinMode(4, OUTPUT); //Configurar el puerto 4 como salida (led) | Configure the port 4 like an output (led)
+  pinMode(4, OUTPUT); //Configurar el puerto 4 como salida (led) | Configure port 4 as an output (led)
+  pinMode(3, OUTPUT); //Configurar el puerto 3 como salida (buzzer) | Configure port 3 as an output (buzzer)
 
 //--------------------------------------------------------------------------
 
@@ -126,10 +100,17 @@ void setup() {
 
   Serial.println("ident, Seg, CO2, COV, PresBME, PresBMP, Humed, TempBME, TempBMP, UV");
   Tarjeta.println("ident, Seg, CO2, COV, PresBME, PresBMP, Humed, TempBME, TempBMP, UV");
-  
+
+
+  alturainicio = bmp.readAltitude(1015);
+  alturamaxbuzz = alturainicio + 20;
 }
 
-//--------------------------------------------------------------------------
+//--------------------------------------------------------------------------  
+
+
+
+
 
 void loop() {
 
@@ -141,6 +122,10 @@ void loop() {
 
 //--------------------------------------------------------------------------
 
+  if (alturainicio >= alturamaxbuzz) //Si el sensor se encuentra por encima del limite(400m)
+    tone(3, 1000); //Emitir pitido (1000Hz) | Emit sound (1000Hz)
+    
+//--------------------------------------------------------------------------
   segundoold = segundo;
   altitudold = altitud;
   segundo = millis(); //Guardar el tiempo actual en la float "segundo" | Store the actual time on the "segundo" float.
