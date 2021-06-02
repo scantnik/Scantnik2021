@@ -137,9 +137,6 @@ void setup() {
 //--------------------------------------------------------------------------  
 
 
-
-
-
 void loop() {
 
   String data; //Crear una cadena para el envio de datos | Create a String for the data
@@ -150,7 +147,7 @@ void loop() {
 
 //--------------------------------------------------------------------------
 
-  if (alturainicio >= alturamaxbuzz) //Si el sensor se encuentra por encima del limite(400m)
+  if (altitud >= alturamaxbuzz) //Si el sensor se encuentra por encima del limite(400m)
     tone(3, 1000); //Emitir pitido (1000Hz) | Emit sound (1000Hz)
     
 //--------------------------------------------------------------------------
