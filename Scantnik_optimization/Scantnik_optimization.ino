@@ -126,8 +126,8 @@ void setup() {
 
 //--------------------------------------------------------------------------
 
-  Serial.println("ident, Seg, CO2, COV, PresBME, PresBMP, Humed, TempBME, TempBMP, UV");
-  Tarjeta.println("ident, Seg, CO2, COV, PresBME, PresBMP, Humed, TempBME, TempBMP, UV");
+  Serial.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV");
+  Tarjeta.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV");
 
 
   alturainicio = bmp.readAltitude(1015);
