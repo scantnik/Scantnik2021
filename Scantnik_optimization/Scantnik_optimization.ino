@@ -59,16 +59,16 @@ float bmp_T; //Float para almacenar los valores de temperatura del BMP | Float f
 float bme_T; //Float para almacenar los valores de temperatura del BME | Float for storing the temperature values from the BME
 float bme_H; //Float para almacenar los valores de humedad del BME | Float for storing the humidity values from the BME
 float altitud; //Float para almacenar los valores de altitud del BMP | Float for storing altitude values from the BMP
-float alturainicio; //Limite de altitud para identificar encendido del buzzer| Threshold for the start of the buzzer
-float alturamaxbuzz;
-float altitudold;
-float velocidad;
+float alturainicio; //Float indicador de la altura inicial | Float indicator for inicial altitude
+float alturamaxbuzz; //Float como limite de altitud para identificar encendido del buzzer| Float to determine altitude threshold for the start of the buzzer
+float altitudold; 
+float velocidad; //Float para almacenar valores de altura | Float for storing speed values
 
 //--------------------------------------------------------------------------
 
-float flat;
-float flon;
-float gps_alt;
+float flat; //Float para almacenar valores de latitud del GPS | Float for storing the GPS latitude values
+float flon; //Float para almacenar valores de longitud del GPS | Float for storing the GPS longitude values
+float gps_alt; //Float para almacenar valores de altitud del GPS | Float for storing the GPS altitude values
 
 //--------------------------------------------------------------------------
 
@@ -126,12 +126,12 @@ void setup() {
 
 //--------------------------------------------------------------------------
 
-  Serial.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV");
-  Tarjeta.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV");
+  Serial.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV"); //Imprimir encabezado con las iniciales para identificar cada valor (APC) | Print header with the initials to identify each value (APC)
+  Tarjeta.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV"); //Imprimir encabezado con las iniciales para identificar cada valor (SD) | Print header with the initials to identify each value (SD)
 
 
-  alturainicio = bmp.readAltitude(1015);
-  alturamaxbuzz = alturainicio + 20;
+  alturainicio = bmp.readAltitude(1015); //La altura inicial será la que lea el BMP | Initial altitude value will be read by the BMP
+  alturamaxbuzz = alturainicio + 200; //El limite de encendida del buzzer será 200 metros mayor a la altura inicial | Altitude threshold will be at 200 metres above intial height value
 }
 
 //--------------------------------------------------------------------------  
@@ -151,6 +151,7 @@ void loop() {
     tone(3, 1000); //Emitir pitido (1000Hz) | Emit sound (1000Hz)
     
 //--------------------------------------------------------------------------
+
   segundoold = segundo;
   altitudold = altitud;
   segundo = millis(); //Guardar el tiempo actual en la float "segundo" | Store the actual time on the "segundo" float.
@@ -176,7 +177,7 @@ void loop() {
   bme_H = bme.getHumidity(); //Almacenar el porcentaje de humedad ambiente | Store the humidity value
   bme_T = bme.getTemperature_C(); //Almacenar la temperatura del BME (celsius) | Store the celsius temperature value of the BME
   bmp_T = bmp.readTemperature(); //Almacenar la temperatura del BMP (celsius) | Store the celsius temperature value of the BMP
-  altitud = bmp.readAltitude(1015);
+  altitud = bmp.readAltitude(1015); //Almacenar la altitud del BMP (metros) | Store altitude value (metres) from the BMP
   velocidad = (altitud - altitudold)/(segundo - segundoold);
 
 //--------------------------------------------------------------------------
