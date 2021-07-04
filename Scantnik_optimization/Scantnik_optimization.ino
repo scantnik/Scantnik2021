@@ -4,20 +4,6 @@
  *  
  *  **Funcionando y probado: | Working and tested:**
  * 
- *  Nada de momento | Nothing yet :)
- * 
- * 
- * ----------------------------------------------------------------
- * 
- *  **No probado: | Not tested:**
- *  
- *  Envío APC220 | APC220 sending
- *  Lectura sensores | Sensor reading
- *  Guardar en SD | Saving on SD
- *  Modulo GPS | GPS Module
- *  Medicion velocidad | Speed
- *  
- * 
  * ----------------------------------------------------------------
  * 
  *  **Cadena de envío/recepción: | String:**
@@ -32,14 +18,10 @@
 #include "cactus_io_BME280_I2C.h" // Libreria necesaria para el BME280 | Library for the BME280
 #include <Adafruit_BMP280.h>  // Libreria necesaria para el BMP280 | Library for the BMP280
 #include <SoftwareSerial.h> // Libreria necesaria para crear puertos serial en pines digitales (para la tarjeta SD) | Library for creating serial ports on digital arduino ports (for the SD card)
-#include <TinyGPS.h> // Libreria necesaria para la conversion de datos GPS | Library for converting the GPS data
 
 //--------------------------------------------------------------------------
 
 SoftwareSerial Tarjeta(9,10); //Crear puerto serie para el OpenLog | Creation of the serial port for the OpenLog (Rx, Tx)
-TinyGPS gps;
-SoftwareSerial gpsSerial(4,3); //Crear puerto serie para el GPS | Creation of the serial port for the GPS (Rx, Tx)
-
 
 //--------------------------------------------------------------------------
 
@@ -66,35 +48,29 @@ float velocidad; //Float para almacenar valores de altura | Float for storing sp
 
 //--------------------------------------------------------------------------
 
-float flat; //Float para almacenar valores de latitud del GPS | Float for storing the GPS latitude values
-float flon; //Float para almacenar valores de longitud del GPS | Float for storing the GPS longitude values
-float gps_alt; //Float para almacenar valores de altitud del GPS | Float for storing the GPS altitude values
-
-//--------------------------------------------------------------------------
-
 Adafruit_CCS811 ccs; // Crear objeto CCS811 | Create CSS811 object
 BME280_I2C bme (0x76);  // Crear objeto BME280 con dirección 0x76 | Create BME280 object with 0x76 address
 Adafruit_BMP280 bmp;  // Crear objeto BMP280 con dirección 0x77 | Create BMP280 object with 0x77 address
 
-//--------------------------------------------------------------------------
+//-------------------------------------------------------------------------- 
 
 void setup() {
  
   Serial.begin(9600); //Iniciar el puerto serie por defecto | Start the default serial port
   Tarjeta.begin(9600);  //Iniciar el puerto serie para el OpenLog | Start the OpenLog serial port
-  gpsSerial.begin(9600);  //Iniciar el puerto serie para el GPS | Start the GPS serial port
+
 
 //--------------------------------------------------------------------------
 
-  pinMode(5, OUTPUT); //Configurar el puerto 4 como salida (led) | Configure port 4 as an output (led)
-  pinMode(6, OUTPUT); //Configurar el puerto 3 como salida (buzzer) | Configure port 3 as an output (buzzer)
+  pinMode(5, OUTPUT); //Configurar el puerto 5 como salida (led) | Configure port 5 as an output (led)
+  pinMode(6, OUTPUT); //Configurar el puerto 6 como salida (buzzer) | Configure port 6 as an output (buzzer)
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   Serial.println("Iniciando..."); //Imprimir estado en el puerto serie por defecto (APC) | Print status on the default serial port (APC)
   Tarjeta.println("Iniciando..."); //Imprimir estado en el puerto serie del OpenLog (SD) | Print status on the OpenLog serial port (SD)
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   if (!bme.begin()) {
       
@@ -104,7 +80,7 @@ void setup() {
 
   }
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   if (!bmp.begin()) {
     
@@ -114,7 +90,7 @@ void setup() {
 
   }
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
   
   if(!ccs.begin()){
       
@@ -124,7 +100,7 @@ void setup() {
 
   }
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   Serial.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV"); //Imprimir encabezado con las iniciales para identificar cada valor (APC) | Print header with the initials to identify each value (APC)
   Tarjeta.println("ident, Seg, CO2, COV, PresBME, PresBMP, Alti, Speed, Humed, TempBME, TempBMP, UV"); //Imprimir encabezado con las iniciales para identificar cada valor (SD) | Print header with the initials to identify each value (SD)
@@ -141,16 +117,16 @@ void loop() {
 
   String data; //Crear una cadena para el envio de datos | Create a String for the data
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   digitalWrite(5, HIGH); // Encender el led | Power on the led
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   if (altitud >= alturamaxbuzz) //Si el sensor se encuentra por encima del limite(400m)
     tone(3, 1000); //Emitir pitido (1000Hz) | Emit sound (1000Hz)
     
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   segundoold = segundo;
   altitudold = altitud;
@@ -158,7 +134,7 @@ void loop() {
   i = i + 1; //Aumentar el identificador de dato | Increase the data identifier
   segundo = segundo/1000; //Convertir los milisegundos a segundos
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   if(ccs.available()){
     if(!ccs.readData()){
@@ -169,7 +145,7 @@ void loop() {
     }
   }
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
   bme.readSensor();
   bmp_Pa = bmp.readPressure(); //Almacenar la presion del BMP | Store the pressure value from the BMP
@@ -180,42 +156,13 @@ void loop() {
   altitud = bmp.readAltitude(1015); //Almacenar la altitud del BMP (metros) | Store altitude value (metres) from the BMP
   velocidad = (altitud - altitudold)/(segundo - segundoold);
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
  
   UVsensorValue = analogRead(A0); //Leer el valor analógico del sensor UV | Read the analog value of the UV sensor
-  UVsensorVoltage = UVsensorValue/1024*5; //Convertir el valor analogico en voltaje | Convert the analog value on voltage
 
-//--------------------------------------------------------------------------
+// ** --------------------------------------------------------------------------
 
-
-// NOT TESTED | GPS
-
-
-  bool newData = false;
-  unsigned long chars;
-  unsigned short sentences, failed;
-
-   while (gpsSerial.available()) {
-    char c = gpsSerial.read();
-
-    if (gps.encode(c))
-      newData = true;
-  }
-  unsigned long age;
-  if (newData) {
-    gps_alt = gps.f_altitude();
-    gps.f_get_position(&flat, &flon, &age);
-
-  }
-
-//--------------------------------------------------------------------------
-
-
-
-
-//
 // Añadimos todos los datos al String | Add all data to the String
-//
 
   data += String(i, 2);
   data += F(",");
@@ -241,28 +188,10 @@ void loop() {
   data += F(",");
   data += String(UVsensorVoltage, 2);
 
-// NOT TESTED | GPS
-
-  data += F(",");
-  data += String(gps_alt);
-  data += F(",");
-  data += String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
-  data += F(",");
-  data += String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
-  data += F(",");
-  data += String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
-  data += F(",");
-  data += String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
-
-
-
-
-
 //--------------------------------------------------------------------------
 
   Tarjeta.println(data); //Guardar datos en la SD | Send data to the SD Card
   Serial.println(data); //Enviar datos por el APC | Send data through the APC
- 
-  delay(100); //Esperar por 100ms | Wait for 100ms
 
+  delay(100); //Esperar por 100ms | Wait for 100ms
 }
