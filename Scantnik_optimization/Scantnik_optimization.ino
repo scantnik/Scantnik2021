@@ -193,5 +193,5 @@ void loop() {
   Tarjeta.println(data); //Guardar datos en la SD | Send data to the SD Card
   Serial.println(data); //Enviar datos por el APC | Send data through the APC
 
-  delay(60); //Esperar por 60ms para no sobrecargar el APC | Wait for 60ms so as not to overload the APC
+  delay(100); //Esperar por 100ms para no sobrecargar el APC | Wait for 100ms so as not to overload the APC
 }
