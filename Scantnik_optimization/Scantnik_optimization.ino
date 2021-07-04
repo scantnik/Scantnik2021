@@ -86,8 +86,8 @@ void setup() {
 
 //--------------------------------------------------------------------------
 
-  pinMode(4, OUTPUT); //Configurar el puerto 4 como salida (led) | Configure port 4 as an output (led)
-  pinMode(3, OUTPUT); //Configurar el puerto 3 como salida (buzzer) | Configure port 3 as an output (buzzer)
+  pinMode(5, OUTPUT); //Configurar el puerto 4 como salida (led) | Configure port 4 as an output (led)
+  pinMode(6, OUTPUT); //Configurar el puerto 3 como salida (buzzer) | Configure port 3 as an output (buzzer)
 
 //--------------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ void loop() {
 
 //--------------------------------------------------------------------------
 
-  digitalWrite(4, HIGH); // Encender el led | Power on the led
+  digitalWrite(5, HIGH); // Encender el led | Power on the led
 
 //--------------------------------------------------------------------------
 
