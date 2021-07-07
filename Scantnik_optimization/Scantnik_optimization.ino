@@ -159,6 +159,7 @@ void loop() {
 // ** --------------------------------------------------------------------------
  
   UVsensorValue = analogRead(A0); //Leer el valor analógico del sensor UV | Read the analog value of the UV sensor
+  UVsensorVoltage = UVsensorValue/1024*5; //Convertir el valor analogico en voltaje | Convert the analog value on voltage
 
 // ** --------------------------------------------------------------------------
 
